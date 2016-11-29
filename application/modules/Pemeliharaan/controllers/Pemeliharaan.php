@@ -28,6 +28,8 @@ class Pemeliharaan extends MY_Controller {
     $data['tittle'] = "Data Pemeliharaan";
     $data['content'] = "Pemeliharaan/data_pemeliharaan";
     $data['lokasi'] = $this->lks->get_all();
+    $this->db->join("barang_pemeliharaan","barang_pemeliharaan.id_brgpemeliharaan = sparepart.id_brgpemeliharaan");
+    $data['sparepart'] = $this->sparepart->get_all();
     $this->template->views($data);
   }
 
@@ -78,10 +80,35 @@ class Pemeliharaan extends MY_Controller {
     $data['kerusakan'] = $datas['kerusakan'];
     $data['penanganan'] = $datas['penanganan'];
     $data['petugas'] = $datas['petugas'];
+
+
+    $xpart = array();
+    foreach ($datas['sprt'] as $id_brgpemeliharaan) {
+      array_push($xpart, array("id_sparepart" => generate_id("spart"), "id_detail" => $datas['iddetail'], "id_brgpemeliharaan" => $id_brgpemeliharaan));
+    }
+
+
     $this->pemeliharaan->insert($data);
+
+    $this->sparepart->insert_batch($xpart);
+    
     $this->db->trans_complete();
     redirect($this->redirect_url);
   }
+
+  // function insert_spart()
+  // {
+  //   $this->db->trans_start();
+  //   $data = $this->input->post();
+  //   $datas = array(
+  //     "id_sparepart" => generate_id("spart"),
+  //     "id_detail" => $data['id_detail'],
+  //     "id_brgpemeliharaan" => $data['id_brgpemeliharaan'],
+  //     "id_lokasi" => $data['id_lokasi']
+  //     );
+  //   $this->sparepart->insert($datas);
+  //   $this->db->trans_complete();
+  // }
 
   function edit(){
     $this->load->model('pemeliharaan_model', 'pemeliharaan');
@@ -91,6 +118,9 @@ class Pemeliharaan extends MY_Controller {
     $data['d'] = $this->pemeliharaan->get_by(array("id_pemeliharaan" => $id));
     $data['lokasi'] = $this->db->get('lokasi')->result();
     $data['detail'] = $this->db->get('detail_barang')->result();
+    $data['brgpem'] = $this->brgpem->get_all();
+     $this->db->join("barang_pemeliharaan","barang_pemeliharaan.id_brgpemeliharaan = sparepart.id_brgpemeliharaan");
+    $data['sparepart'] = $this->sparepart->get_all();
     //$data['kategori'] = $this->ktg->get_all();  
     //$data['inventaris'] = $this->db->get('inventaris')->result();
 
@@ -108,6 +138,21 @@ class Pemeliharaan extends MY_Controller {
   $this->pemeliharaan->hapus_data($where,'pemeliharaan');
 
   redirect($this->redirect_url);
+  }
+
+  function delete_spart()
+  {
+    $idpem = $this->input->get("idpem");
+    $this->redirect_guys = base_url().'pemeliharaan/edit/?id='.$idpem;
+    $this->db->trans_start();
+
+    $id = $this->input->get("id");
+    $this->sparepart->delete($id);
+
+    $this->db->trans_complete();
+    
+    redirect($this->redirect_guys);
+
   }
 
 
@@ -128,6 +173,14 @@ class Pemeliharaan extends MY_Controller {
     $data['penanganan'] = $datas['penanganan'];
     $data['petugas'] = $datas['petugas'];
 
+    $this->sparepart->delete_by(array("id_detail" => $datas['id_detail']));
+
+    $xpart = array();
+    foreach ($datas['sprt'] as $id_brgpemeliharaan) {
+      array_push($xpart, array("id_sparepart" => generate_id("spart"), "id_detail" => $datas['iddetail'], "id_brgpemeliharaan" => $id_brgpemeliharaan));
+    }
+
+    $this->sparepart->insert_batch($xpart);
 
     $this->pemeliharaan->update($id,$data);
     $this->db->trans_complete();

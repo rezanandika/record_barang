@@ -9,6 +9,7 @@ if($state == "edit"){
   $jam_selesai = $d['jam_selesai'];
   $kerusakan = $d['kerusakan'];
   $penanganan = $d['penanganan'];
+  $petugas = $d['petugas'];
   $action =  "update";
 }else{
   $id_pemeliharaan ="";
@@ -204,6 +205,56 @@ if($state == "edit"){
 
  -->
 
+  <div class="form-group">
+                      <label for="inputPassword3" class="col-sm-2 control-label">Sparepart</label>
+                      <div class="col-sm-5 input-group">
+                         <select class="form-control select2" name="spart" id="spart" onchange="javascript: addText();"">
+                         <option class="disabled">Pilih Barang yang Diganti</option>
+
+                          <?php  foreach($brgpem as $l){ ?>
+                              
+                         
+                          <option asp="<?= $l['nama_brgpemeliharaan'] ?>"  value="<?= $l['id_brgpemeliharaan'] ?>" ><?php echo $l['nama_brgpemeliharaan'] ?></option>
+
+                          <?php } ?>
+                         </select>
+                      </div>
+                    </div>
+
+
+
+
+        <div class="form-group">
+                      <label for="tabel" class="col-sm-2 control-label"></label>
+                    <div class="box-body col-sm-5 input-group">
+              <table id="example1" class="table table-bordered table-striped" id="txt">
+                <thead>
+                <tr>
+                  <th>Kode Pemeliharaan</th>
+                  <th>Qty</th>
+                  <th>/</th>
+
+                </tr>
+                </thead>
+              <tbody id="box">
+              <?php foreach ($sparepart as $sp) {
+                if($id_detail == $sp['id_detail']){
+               ?>
+                    
+                <tr>
+                  <td><?= $sp['nama_brgpemeliharaan'] ?></td>
+                  <td></td>
+                  <td><a href="<?php echo base_url().'pemeliharaan/delete_spart/?id='.$sp['id_sparepart'].'&idpem='.$id_pemeliharaan; ?>"><i class="fa fa-trash"></i></a></td>
+                </tr>
+                 
+              <?php } } ?>
+                </tbody>
+                
+              </table>
+            </div>
+            <!-- /.box-body -->
+        </div>
+
                      <div class="form-group">
                       <label for="idpemeliharaan" class="col-sm-2 control-label">Petugas Lapor</label>
                       <div class="col-sm-5 input-group">
@@ -258,6 +309,19 @@ if($state == "edit"){
                 $("#iddetail").html(data);
               })
        })
+
+     $("#spart").on('change',function() {
+        var spt = document.getElementById("spart").value;
+        var asp = $('option:selected', this).attr("asp");
+        // var brgdetail = document.getElementById("iddetail").value;
+        // var lokasi = document.getElementById("idlokasi").value;
+      
+        $("#box").append("<tr><td>"+ asp +"<input type='hidden' name='sprt[]' id='sprt' value='"+ spt +"' /></td><td></td><td></td></tr>");
+
+        
+    
+
+     })
     
   });
   </script>

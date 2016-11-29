@@ -30,9 +30,9 @@
                   <th>Lokasi</th>
                   <th>ID Sub Barang</th>
                   <th>Tanggal Mulai</th>
-                  <th>Jam Mulai</th>
+                  <!-- <th>Jam Mulai</th> -->
                   <th>Tanggal Selesai</th>
-                  <th>Jam Selesai</th>
+                  <!-- <th>Jam Selesai</th> -->
                   <th>Kerusakan</th>
                   <th>Penanganan</th>
                   <th>Petugas Lapor</th>
@@ -48,13 +48,17 @@
                   <td><?php echo $d['id_lokasi']; ?></td>
                   <td><?php echo $d['id_detail']; ?></td>
                   <td><?php echo $d['tgl_mulai']; ?></td>
-                  <td><?php echo $d['jam_mulai']; ?></td>
+                  <!-- <td><?php echo $d['jam_mulai']; ?></td> -->
                   <td><?php echo $d['tgl_selesai']; ?></td>
-                  <td><?php echo $d['jam_selesai']; ?></td>
+                  <!-- <td><?php echo $d['jam_selesai']; ?></td> -->
                   <td><?php echo $d['kerusakan']; ?></td>
                   <td><?php echo $d['penanganan']; ?></td>
                   <td><?php echo $d['petugas']; ?></td>
-                  <td> </td>
+                  <td><?php foreach ($sparepart as $sp) {
+                    if ($d['id_detail'] == $sp['id_detail']) {
+                      echo "- ".$sp['nama_brgpemeliharaan']."<br>";
+                    }
+                  } ?></td>
                   
                  
                       <td><a href="<?php echo base_url(). 'index.php/pemeliharaan/edit/?id=' .$d['id_pemeliharaan']; ?>" title="Edit"><i class="fa fa-pencil text-primary"></i></a>
