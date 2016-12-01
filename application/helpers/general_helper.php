@@ -159,6 +159,12 @@ if ( ! function_exists('generate_id')){
 	}
 }
 
+if ( ! function_exists('quantity')){
+	function quantity($extra = ''){
+		
+	}
+}
+
 if ( ! function_exists('date_format_ext')){
 	// source : http://php.net/manual/en/function.strftime.php
 	function date_format_ext($sqldate = '', $type = 1, $datetime = false, $separator = '/') {

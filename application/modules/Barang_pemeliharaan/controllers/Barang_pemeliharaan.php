@@ -7,6 +7,7 @@ class Barang_pemeliharaan extends MY_Controller {
 	function __construct() {
   parent::__construct();
   $this->load->model('Brgpemeliharaan_model','brgpem');
+  $this->load->model('sparepart_model', 'sparepart');
   $this->redirect_url = base_url(). "barang_pemeliharaan";
 
  
@@ -98,5 +99,10 @@ class Barang_pemeliharaan extends MY_Controller {
 
   redirect($this->redirect_url);
   }
+
+  // public function Quantity($value='')
+  // {
+  //   # code...
+  // }
 
 }

@@ -320,16 +320,19 @@ if($state == "edit"){
         var spt = document.getElementById("spart").value;
         var asp = $('option:selected', this).attr("asp");
        
-       
-        var brgdetail = document.getElementById("iddetail").value;
-        var lokasi = document.getElementById("idlokasi").value;
-      
-        $("#box").append("<tr><td>"+ asp +"<input type='hidden' name='sprt[]' id='sprt' value='"+ spt +"' /></td><td></td><td></td></tr>");
-
         
-    
+
+        $("#box").append("<tr><td>"+ asp +"<input type='hidden' name='sprt[]' id='sprt' value='"+ spt +"' /></td><td>1<input type='hidden' id='qty' name='qty' value='1'/></td><td><a id='remove'>hapus</a></td></tr>");
+
+         $("#remove").click(function() {
+           document.getElementById("box").deleteRow(0);
+         })
+
 
      })
+
+    
+
     
   });
   </script>

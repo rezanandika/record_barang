@@ -28,19 +28,29 @@
               <tbody>
 
                  <?php foreach($brgpem as $d){ ?>
+                       <?php
+                            $this->db->from("sparepart");
+                            $this->db->group_by("id_brgpemeliharaan");
+                            $this->db->like('id_brgpemeliharaan', $d['id_brgpemeliharaan']);
+                            $qty =$this->db->count_all_results();
+                       ?>
+
                     <tr align="left">
                       <td><?php echo $d['id_brgpemeliharaan'] ?></td>
                       <td><?php echo $d['nama_brgpemeliharaan'] ?></td>
                       <td><?php echo $d['jumlah'] ?></td>
                       <td><?php echo $d['tgl_masuk'] ?></td>
-                      <td> </td>
-                      <td> </td>
+                      <td><?php if ($qty != 0 )echo $d['jumlah'] - $qty. " Item"; ?></td>
+                      <td><?php if ($qty != 0 )echo $qty. " Item"; ?></td>
                       <td><?php echo $d['satuan'] ?></td>
                       <td><a href="<?php echo base_url(). 'barang_pemeliharaan/edit/?id=' .$d['id_brgpemeliharaan'] ?>" 
                         title="Edit"><i class="fa fa-pencil text-primary"></i></a> 
                       <a href="<?php echo base_url(). 'barang_pemeliharaan/delete/' .$d['id_brgpemeliharaan'] ?>" 
                         title="Hapus"><i class="fa fa-trash text-danger"></i></a></td>
                     </tr>
+
+                   
+
                  <?php } ?>
              
                 </tbody>

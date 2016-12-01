@@ -84,9 +84,10 @@ class Pemeliharaan extends MY_Controller {
 
     $xpart = array();
     foreach ($datas['sprt'] as $id_brgpemeliharaan) {
-      array_push($xpart, array("id_sparepart" => generate_id("spart"), "id_detail" => $datas['iddetail'], "id_brgpemeliharaan" => $id_brgpemeliharaan));
+      array_push($xpart, array("id_sparepart" => generate_id("spart"), "id_detail" => $datas['iddetail'], "id_brgpemeliharaan" => $id_brgpemeliharaan,"jumlah_pem" => $datas['qty']));
     }
 
+   
 
     $this->pemeliharaan->insert($data);
 
@@ -150,7 +151,6 @@ class Pemeliharaan extends MY_Controller {
     $this->sparepart->delete($id);
 
     $this->db->trans_complete();
-    
     redirect($this->redirect_guys);
 
   }
@@ -187,4 +187,7 @@ class Pemeliharaan extends MY_Controller {
 
     redirect($this->redirect_url);
   }
+
+
+  
 }
