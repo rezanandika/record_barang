@@ -238,12 +238,12 @@ if($state == "edit"){
         <div class="form-group">
                       <label for="tabel" class="col-sm-2 control-label"></label>
                     <div class="box-body col-sm-5 input-group">
-              <table id="example1" class="table table-bordered table-striped" id="txt">
+              <table id="sparepart" class="table table-bordered table-striped" id="txt">
                 <thead>
                 <tr>
                   <th>Kode Pemeliharaan</th>
                   <th>Qty</th>
-                  <th>/</th>
+                  <th>Act</th>
 
                 </tr>
                 </thead>
@@ -322,16 +322,17 @@ if($state == "edit"){
        
         
 
-        $("#box").append("<tr><td>"+ asp +"<input type='hidden' name='sprt[]' id='sprt' value='"+ spt +"' /></td><td>1<input type='hidden' id='qty' name='qty' value='1'/></td><td><a id='remove'>hapus</a></td></tr>");
-
-         $("#remove").click(function() {
-           document.getElementById("box").deleteRow(0);
-         })
-
+        $("#box").append("<tr><td>"+ asp +"<input type='hidden' name='sprt[]' id='sprt' value='"+ spt +"' /></td><td>1<input type='hidden' id='qty' name='qty' value='1'/></td><td><a id='remove'><i class='fa fa-trash'></i></a></td></tr>");
 
      })
 
-    
+      $(document).on('click', '#remove', function () {
+        var tr = $(this).closest('tr');
+            tr.fadeOut(200, function(){
+            tr.remove();
+            });
+            return false;
+      })
 
     
   });
