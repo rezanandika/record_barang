@@ -1,27 +1,28 @@
-<?php
-if (!defined('BASEPATH'))
-exit('No direct script access allowed');
- 
-class Pemeliharaan extends MY_Controller {
- 
-  function __construct() {
-  parent::__construct();
-  $this->load->model('pemeliharaan_model', 'pemeliharaan');
-  $this->load->module('penempatan');
-  $this->load->model('penempatan_model', 'penempatan');
-  $this->load->module('kokasi');
-  $this->load->model('lokasi_model', 'lks');
-  $this->load->module('barang');
-  $this->load->model('Detail_model', 'dtl');
-
-  $this->load->module('Barang_pemeliharaan');
-  $this->load->model('brgpemeliharaan_model', 'brgpem');
-  $this->load->model('sparepart_model', 'sparepart');
-  $this->redirect_url = base_url(). "index.php/pemeliharaan";
- 
+<?php /**
+* 
+*/
+class Pemeliharaan extends MY_Controller
+{
+  
+  function __construct()
+  {
+    parent::__construct();
+     $this->load->model('pemeliharaan_model', 'pemeliharaan');
+     $this->load->module('penempatan');
+     $this->load->model('penempatan_model', 'penempatan');
+     $this->load->module('kokasi');
+     $this->load->model('lokasi_model', 'lks');
+     $this->load->module('barang');
+     $this->load->model('Detail_model', 'dtl');
+     
+     $this->load->module('Barang_pemeliharaan');
+     $this->load->model('brgpemeliharaan_model', 'brgpem');
+     $this->load->model('sparepart_model', 'sparepart');
+     $this->redirect_url = base_url(). "index.php/pemeliharaan";
   }
- 
-   function index(){
+
+  function index()
+  {
     $data = array();
    
     $data['pemeliharaan'] = $this->pemeliharaan->get_all();
@@ -33,6 +34,20 @@ class Pemeliharaan extends MY_Controller {
     $this->template->views($data);
   }
 
+   function history()
+  {
+    $id = $this->input->get('id');
+    $data = array();
+   
+    $this->db->join("lokasi","lokasi.id_lokasi = pemeliharaan.id_lokasi");
+    $data['pemeliharaan'] = $this->pemeliharaan->get_many_by(array("id_detail" => $id));
+    $data['tittle'] = "History Permeliharaan ".$id;
+    $data['content'] = "Pemeliharaan/history";
+    $data['lokasi'] = $this->lks->get_all();
+    $this->db->join("barang_pemeliharaan","barang_pemeliharaan.id_brgpemeliharaan = sparepart.id_brgpemeliharaan");
+    $data['sparepart'] = $this->sparepart->get_all();
+    $this->template->views($data);
+  }
 
 
    public function tambah(){
@@ -188,6 +203,4 @@ class Pemeliharaan extends MY_Controller {
     redirect($this->redirect_url);
   }
 
-
-  
 }

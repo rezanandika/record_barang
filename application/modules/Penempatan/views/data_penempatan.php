@@ -34,6 +34,7 @@
                   <th>Kode Lokasi</th>
                   <th>lokasi</th>
                   <th>Kode Detail Barang</th>
+                  <th>History Pemeliharaan</th>
                   <th>Barang</th>
                   
                   <!-- <th>Aksi</th> -->
