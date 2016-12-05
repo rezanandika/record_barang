@@ -266,7 +266,7 @@ class Barang extends MY_Controller {
      $status_distribusi="";
      
      // memberi nilai pada status distribusi
-     if ($data['id_penempatan'] == "pilih") {
+     if ($data['id_penempatan'] == NULL) {
           $status_distribusi .= 0;
      }else{
           $status_distribusi .= $query['status_distribusi'] + 1;
@@ -306,9 +306,12 @@ class Barang extends MY_Controller {
     if ($door['id_penempatan'] != NULL & $door['status_distribusi'] == 1) {
             $stok = 1;
             $push = $brg['distribusi'] - $stok;
-    }elseif ($door['status_distribusi'] == 0) {
+    }elseif ($door['id_penempatan'] == NULL & $door['status_distribusi'] == 0) {
         $stok = 1;
         $push = $brg['distribusi'] + $stok;
+    }else{
+      $stok = 0;
+      $push = $brg['distribusi'] - $stok;
     }
 
     $ekse = array("distribusi" => $push);
@@ -326,28 +329,20 @@ class Barang extends MY_Controller {
   function delete(){
     //fungsi all delete
   $id = $this->input->get('id');
-  $query = $this->barang->get($id);
-
   $this->db->trans_start();
 
-
-  // $detail = array();
-  // $no++;
-  // for ($i=0; $i<$query['jumlah'] ; $i++) { 
-  //     $detail = $query['id_barang'].'.'.$no;  
-  // }
-
-  // if($i<$query['jumlah']){
-  //   $this->brgln->delete_by(array('lain_barang.id_detail' => $detail));
-  // }
-
+  $query = $this->barang->get($id);
+  $detail = array();
   
+  for ($i=1; $i<= $query['jumlah'] ; $i++) { 
+      $detail = $query['id_barang'];  
+      $this->brgln->delete_by(array('lain_barang.id_detail' => $detail.'.'.$i));
+  }
+
 
   $this->barang->delete($id);
   $this->detail->delete_by(array("id_barang" => $id));
-
   $this->db->trans_complete();
-
   redirect($this->redirect_url);
   }
 

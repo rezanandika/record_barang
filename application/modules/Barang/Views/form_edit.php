@@ -232,7 +232,7 @@ if($state == "edit"){
                       <label for="idpenempatan" class="col-sm-2 control-label">Kode Penempatan</label>
                       <div class="col-sm-5 input-group">
                                       <select class="form-control select2" name="id_penempatan">
-                                        <option value="pilih">Pilih Lokasi</option>
+                                        <option class="disabled" value="">Pilih Lokasi</option>
                                            <?php foreach($lokasi as $l){
                                             $sel=""; if(isset($id_penempatan)){
                                               if($id_penempatan == $l->id_lokasi) $sel="selected";
