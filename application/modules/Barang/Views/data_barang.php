@@ -46,7 +46,7 @@ $this->simple_login->cek_login();
                       <td><?php echo $d['nama_inventaris'] ?></td>
                       <td><a href="<?php echo base_url()."index.php/barang/detail/?id=".$d['id_barang']; ?>">Lihat</a></td>
                       <td><a href="<?php echo base_url(). 'index.php/barang/edit/?id=' .$d['id_barang'] ?>" title="Edit"><i class="fa fa-pencil text-primary"></i></a> 
-                      <a href="<?php echo base_url(). 'index.php/barang/delete/' .$d['id_barang'] ?>" title="Hapus"><i class="fa fa-trash text-danger"></i></a></td>
+                      <a href="<?php echo base_url(). 'index.php/barang/delete/?id=' .$d['id_barang'] ?>" title="Hapus"><i class="fa fa-trash text-danger"></i></a></td>
                     </tr>
                  <?php } ?>
              

@@ -323,12 +323,30 @@ class Barang extends MY_Controller {
   }
 
 
-  function delete($id_barang){
+  function delete(){
     //fungsi all delete
-  $where = array('id_barang' => $id_barang);
+  $id = $this->input->get('id');
+  $query = $this->barang->get($id);
 
-  $this->load->model('barang_model','barang');
-  $this->barang->hapus_data($where,'barang');
+  $this->db->trans_start();
+
+
+  // $detail = array();
+  // $no++;
+  // for ($i=0; $i<$query['jumlah'] ; $i++) { 
+  //     $detail = $query['id_barang'].'.'.$no;  
+  // }
+
+  // if($i<$query['jumlah']){
+  //   $this->brgln->delete_by(array('lain_barang.id_detail' => $detail));
+  // }
+
+  
+
+  $this->barang->delete($id);
+  $this->detail->delete_by(array("id_barang" => $id));
+
+  $this->db->trans_complete();
 
   redirect($this->redirect_url);
   }
