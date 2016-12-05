@@ -55,7 +55,7 @@
                   <td><?php echo $d['penanganan']; ?></td>
                   <td><?php echo $d['petugas']; ?></td>
                   <td><?php foreach ($sparepart as $sp) {
-                    if ($d['id_detail'] == $sp['id_detail']) {
+                    if ($d['id_detail'] == $sp['id_detail'] && $d['tgl_mulai'] == $sp['tgl_perbaikan']) {
                       echo "- ".$sp['nama_brgpemeliharaan']."<br>";
                     }
                   } ?></td>
@@ -63,7 +63,7 @@
                  
                       <td><a href="<?php echo base_url(). 'index.php/pemeliharaan/edit/?id=' .$d['id_pemeliharaan']; ?>" title="Edit"><i class="fa fa-pencil text-primary"></i></a>
 
-                        <a href="<?php echo base_url(). 'index.php/pemeliharaan/delete/' .$d['id_pemeliharaan'] ?>" title="Hapus"><i class="fa fa-trash text-danger"></i></a></td>
+                        <a href="<?php echo base_url(). 'index.php/pemeliharaan/delete/?id=' .$d['id_pemeliharaan'] ?>" title="Hapus"><i class="fa fa-trash text-danger"></i></a></td>
                     </tr>
                  <?php } ?>
              

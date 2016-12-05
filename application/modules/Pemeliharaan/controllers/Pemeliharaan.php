@@ -82,7 +82,7 @@ class Pemeliharaan extends MY_Controller
   public function insert()
   {
 
-    $this->db->join("barang","pemeliharaan.id_detail = detail_barang.id_detail");
+   
     $this->db->trans_start();
     $datas = $this->input->post();
     $data['id_pemeliharaan'] = $datas['idpemeliharaan'];
@@ -99,7 +99,7 @@ class Pemeliharaan extends MY_Controller
 
     $xpart = array();
     foreach ($datas['sprt'] as $id_brgpemeliharaan) {
-      array_push($xpart, array("id_sparepart" => generate_id("spart"), "id_detail" => $datas['iddetail'], "id_brgpemeliharaan" => $id_brgpemeliharaan,"jumlah_pem" => $datas['qty']));
+      array_push($xpart, array("id_sparepart" => generate_id("spart"), "id_detail" => $datas['iddetail'], "id_brgpemeliharaan" => $id_brgpemeliharaan,"jumlah_pem" => $datas['qty'],"tgl_perbaikan" => $data['tgl_mulai'], "id_pemeliharaan" => $datas['idpemeliharaan']));
     }
 
    
@@ -147,12 +147,15 @@ class Pemeliharaan extends MY_Controller
 
   }
 
-  function delete($id_pemeliharaan){
-  $where = array('id_pemeliharaan' => $id_pemeliharaan);
+  function delete(){
+  $id = $this->input->get('id');
+  $this->db->trans_start();
 
-  $this->load->model('pemeliharaan_model','pemeliharaan');
-  $this->pemeliharaan->hapus_data($where,'pemeliharaan');
+  $this->pemeliharaan->delete($id);
 
+  $this->sparepart->delete_by(array("id_pemeliharaan" => $id));
+
+  $this->db->trans_complete();
   redirect($this->redirect_url);
   }
 
@@ -188,13 +191,16 @@ class Pemeliharaan extends MY_Controller
     $data['penanganan'] = $datas['penanganan'];
     $data['petugas'] = $datas['petugas'];
 
-    $this->sparepart->delete_by(array("id_detail" => $datas['id_detail']));
+
+
+    $this->sparepart->delete_by(array("id_pemeliharaan" => $datas['id_sprt']));
 
     $xpart = array();
     foreach ($datas['sprt'] as $id_brgpemeliharaan) {
-      array_push($xpart, array("id_sparepart" => generate_id("spart"), "id_detail" => $datas['iddetail'], "id_brgpemeliharaan" => $id_brgpemeliharaan));
+      array_push($xpart, array("id_sparepart" => generate_id("spart"), "id_detail" => $datas['iddetail'], "id_brgpemeliharaan" => $id_brgpemeliharaan, "tgl_perbaikan" => $data['tgl_mulai'], "id_pemeliharaan" => $datas['idpemeliharaan']));
     }
 
+    if(!empty($datas['sprt']))
     $this->sparepart->insert_batch($xpart);
 
     $this->pemeliharaan->update($id,$data);

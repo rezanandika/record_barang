@@ -36,7 +36,7 @@ if($state == "edit"){
 
 
  <div class="row">
-            
+          
             <!-- right column -->
             <div class="col-md-12">
               <!-- Horizontal Form -->
@@ -238,13 +238,18 @@ if($state == "edit"){
                 </thead>
               <tbody id="box">
               <?php foreach ($sparepart as $sp) {
-                if($id_detail == $sp['id_detail']){
+                if($id_detail == $sp['id_detail'] && $tgl_mulai == $sp['tgl_perbaikan']){
                ?>
                     
                 <tr>
-                  <td><?= $sp['nama_brgpemeliharaan'] ?></td>
+                  <td><?= $sp['nama_brgpemeliharaan'] ?>
+
+                  <input type='hidden' name='id_sprt' id='id_sprt' value='<?= $sp["id_pemeliharaan"] ?>' />
+
+                  <input type='hidden' name='sprt[]' id='sprt' value='<?= $sp["id_brgpemeliharaan"] ?>' />
+                  </td>
                   <td></td>
-                  <td><a href="<?php echo base_url().'pemeliharaan/delete_spart/?id='.$sp['id_sparepart'].'&idpem='.$id_pemeliharaan; ?>"><i class="fa fa-trash"></i></a></td>
+                  <td><a id='remove'><i class="fa fa-trash"></i></a></td>
                 </tr>
                  
               <?php } } ?>
@@ -310,18 +315,25 @@ if($state == "edit"){
               })
        })
 
+     
      $("#spart").on('change',function() {
         var spt = document.getElementById("spart").value;
         var asp = $('option:selected', this).attr("asp");
-        // var brgdetail = document.getElementById("iddetail").value;
-        // var lokasi = document.getElementById("idlokasi").value;
-      
-        $("#box").append("<tr><td>"+ asp +"<input type='hidden' name='sprt[]' id='sprt' value='"+ spt +"' /></td><td></td><td></td></tr>");
-
+       
         
-    
+
+        $("#box").append("<tr><td>"+ asp +"<input type='hidden' name='sprt[]' id='sprt' value='"+ spt +"' /></td><td>1<input type='hidden' id='qty' name='qty' value='1'/></td><td><a id='remove'><i class='fa fa-trash'></i></a></td></tr>");
 
      })
+
+      $(document).on('click', '#remove', function () {
+        var tr = $(this).closest('tr');
+            tr.fadeOut(200, function(){
+            tr.remove();
+            });
+            return false;
+      })
+
     
   });
   </script>
